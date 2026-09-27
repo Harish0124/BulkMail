@@ -38,7 +38,7 @@ npm install
 npm run dev
 ```
 
-Open the Vite URL shown in the terminal, usually `http://localhost:5173`. Vite proxies `/api` requests to the backend.
+Open the Vite URL shown in the terminal, usually `http://localhost:5173`. The frontend connects to `https://bulkmail-mpsk.onrender.com` by default. Set `VITE_API_URL=http://localhost:5000` in `frontend/.env.local` to use a local backend instead. Configure `CLIENT_ORIGINS` on the backend deployment with the frontend's exact origin(s) so browser requests pass CORS.
 
 ## Use
 

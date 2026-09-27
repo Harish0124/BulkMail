@@ -20,6 +20,7 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const maxRecipients = 100
 const maxUploadSize = 5 * 1024 * 1024
 const maxWords = 30
+const apiBaseUrl = (import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? '' : 'https://bulkmail-mpsk.onrender.com')).replace(/\/+$/, '')
 
 function countWords(value) {
   return value.trim() ? value.trim().split(/\s+/).length : 0
@@ -56,7 +57,7 @@ function splitRecipients(value) {
 
 async function getCampaigns() {
   try {
-    const response = await fetch('/api/campaigns')
+    const response = await fetch(`${apiBaseUrl}/api/campaigns`)
     const result = await readApiResponse(response)
     return response.ok ? result.campaigns : []
   } catch {
@@ -102,7 +103,7 @@ function App() {
   useEffect(() => {
     async function initialize() {
       try {
-        const response = await fetch('/api/health')
+        const response = await fetch(`${apiBaseUrl}/api/health`)
         const result = await readApiResponse(response)
         setApiStatus(response.ok ? 'connected' : 'offline')
         setDatabaseReady(Boolean(result.database))
@@ -177,7 +178,7 @@ function App() {
 
     setSending(true)
     try {
-      const response = await fetch('/api/campaigns', {
+      const response = await fetch(`${apiBaseUrl}/api/campaigns`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ subject, body, recipients }),
